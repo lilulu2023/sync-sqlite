@@ -8,13 +8,15 @@ A Node lib calling sqlite3 with node c++ addon
 # usage
 ```
     const Sql = require('sync-sqlite-native');
-    
-    let db = new Sql(':memory:');
-    
+
+    let db = new Sql();
+
+    db.connect(':memory:')
+
     let data_array = db.run('SELECT * FROM sqlite_master');
 
     console.log(data_array);
-    
-    db.close();
+
+    db.disconnect();
     
 ```
