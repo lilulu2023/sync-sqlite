@@ -2,7 +2,7 @@
   "targets": [
     {
       "target_name": "sync_sql",
-      "sources": [ "sync_sql.cc", "sqlite3_call.cc" ],
+      "sources": ["src/*.cc" ],
       "link_settings":
       {
         "libraries": [
