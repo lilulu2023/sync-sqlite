@@ -1,4 +1,5 @@
 #include <node_api.h>
+#include <map>
 #include "sqlite3_call.h"
 
 #define MAX_SQL_LEN 1024
@@ -23,42 +24,51 @@
   } while(0)
 
 
-sqlite3* db;
+map<string, sqlite3*> db_map;
 
 static napi_value
 db_connect(napi_env env, napi_callback_info info)
 {
+    sqlite3* db = nullptr;
     size_t argc = 1;
     size_t str_size_read = 0;
+    bool ret = false;
+    string key = string();
     char* buff = new char[MAX_SQL_LEN];
-    napi_value *argv = new napi_value[1];
+    napi_value argv[1];
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
     napi_get_value_string_utf8(env, argv[0], buff, MAX_SQL_LEN, &str_size_read);
-    auto ret = connect(db, buff);
-    free(buff);
+    key = string(buff, str_size_read);
+    ret = connect(db, buff);
+    db_map[key] = db;
     napi_value return_value;
     napi_create_int32(env, ret, &return_value);
+    free(buff);
     return return_value;
 }
 
 static napi_value
 db_exec(napi_env env, napi_callback_info info)
 {
-    napi_value result;
-    size_t argc = 1;
+    sqlite3* db = nullptr;
+    size_t argc = 2;
     size_t str_size_read = 0;
-    napi_value argv[1];
+    napi_value argv[2];
     char* buff = new char[MAX_SQL_LEN];
+    string key = string();
+    string sql = string();
+    string err = string();
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
     napi_get_value_string_utf8(env, argv[0], buff, MAX_SQL_LEN, &str_size_read);
-   
+    key = string(buff, str_size_read);
+    db = db_map[key];
+    napi_get_value_string_utf8(env, argv[1], buff, MAX_SQL_LEN, &str_size_read);
+    sql = string(buff, str_size_read);
+    free(buff);
+    
     vector<string> column_names;
     vector<int> column_types;
     list<uint8_t*> column_values;
-    string sql = string(buff, str_size_read);
-    string err = string();
-    free(buff);
-    
     bool ret = exec(db, sql, err, column_names, column_types, column_values);
 
     if(!ret)
@@ -122,14 +132,22 @@ db_exec(napi_env env, napi_callback_info info)
 static napi_value
 db_disconnect(napi_env env, napi_callback_info info)
 {
-    auto ret = disconnect(db);
+    sqlite3* db = nullptr;
+    size_t argc = 1;
+    size_t str_size_read = 0;
+    char* buff = new char[MAX_SQL_LEN];
+    bool ret = false;
+    napi_value argv[1];
+    napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
+    napi_get_value_string_utf8(env, argv[0], buff, MAX_SQL_LEN, &str_size_read);
+    string key = string(buff, str_size_read);
+    db = db_map[key];
+    ret = disconnect(db);
+    map.erase(key);
     napi_value result;
     napi_create_int32(env, ret, &result);
     return result;
 }
-
-
-
 
 napi_value create_sync_sql(napi_env env) {
   napi_value result;

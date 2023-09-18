@@ -11,10 +11,10 @@ A Node lib calling sqlite3 with node c++ addon
     
     let connect_success = sync_sql_native.connect(':memory:'); //You can also use your path to db file
     
-    let data_array = sync_sql_native.exec('SELECT * FROM sqlite_master');
+    let data_array = sync_sql_native.exec(':memory:', 'SELECT * FROM sqlite_master');
     
-    let error_msg_obj = sync_sql_native.exec('some bad statements');
+    let error_msg_obj = sync_sql_native.exec(':memory:', 'some bad statements');
     
-    let disconnect_result =  sync_sql_native.disconnect();
+    let disconnect_result =  sync_sql_native.disconnect(':memory:');
     
 ```
