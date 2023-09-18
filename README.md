@@ -7,14 +7,14 @@ A Node lib calling sqlite3 with node c++ addon
 
 # usage
 ```
-    const sync_sql_native = require('sync-sqlite-native');
+    const Sql = require('sync-sqlite-native');
     
-    let connect_success = sync_sql_native.connect(':memory:'); //You can also use your path to db file
+    let db = new Sql(':memory:');
     
-    let data_array = sync_sql_native.exec(':memory:', 'SELECT * FROM sqlite_master');
+    let data_array = db.run('SELECT * FROM sqlite_master');
+
+    console.log(data_array);
     
-    let error_msg_obj = sync_sql_native.exec(':memory:', 'some bad statements');
-    
-    let disconnect_result =  sync_sql_native.disconnect(':memory:');
+    db.close();
     
 ```
