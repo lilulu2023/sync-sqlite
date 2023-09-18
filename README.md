@@ -15,6 +15,6 @@ A Node lib calling sqlite3 with node c++ addon
     
     let error_msg_obj = sync_sql_native.exec('some bad statements');
     
-    let disconnect_result =  error_msg_obj.disconnect();
+    let disconnect_result =  sync_sql_native.disconnect();
     
 ```
