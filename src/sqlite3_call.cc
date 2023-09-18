@@ -5,6 +5,7 @@
 
 
 #include <sqlite3.h>
+#include <cstring>
 #include "sqlite3_call.h"
 
 bool connect(sqlite3* &db, string db_file_path)

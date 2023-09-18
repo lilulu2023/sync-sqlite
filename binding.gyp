@@ -7,6 +7,7 @@
       {
         "libraries": [
             "-lsqlite3",
+	    "-lstdc++"
          ]
       }
     }
