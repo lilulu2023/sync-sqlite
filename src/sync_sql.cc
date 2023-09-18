@@ -71,6 +71,12 @@ db_exec(napi_env env, napi_callback_info info)
         return error_result;
     }else{
         long column_count = min(column_names.size(), column_types.size());
+        if(column_count == 0)
+        {
+            napi_value result_array;
+            napi_create_array(env, &result_array);
+            return result_array;
+        }
         long row_count = column_values.size() / column_count;
         auto it = column_values.begin();
         napi_value result_array;
