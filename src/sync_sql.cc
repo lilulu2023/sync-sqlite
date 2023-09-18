@@ -143,7 +143,7 @@ db_disconnect(napi_env env, napi_callback_info info)
     string key = string(buff, str_size_read);
     db = db_map[key];
     ret = disconnect(db);
-    map.erase(key);
+    db_map.erase(key);
     napi_value result;
     napi_create_int32(env, ret, &result);
     return result;
