@@ -1,0 +1,26 @@
+{
+  "name": "sync-sqlite-native",
+  "version": "0.0.1",
+  "description": "SQLite operation based on sqlite3 c lib",
+  "main": "index.js",
+  "author": {
+    "name": "lilulu",
+    "email": "lilulu@siptimes.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:lilulu2023/sync-sqlite.git"
+  },
+  "keywords": [
+    "sqlite",
+    "database",
+    "sync"
+  ],
+  "scripts": {
+    "install": "node-gyp-build"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "node-gyp-build": "^4.3.0"
+  }
+}
